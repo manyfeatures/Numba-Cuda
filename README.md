@@ -2,15 +2,6 @@
 
 ## Numba implementation
 
-### To do list
-  - Memory kernel use
-  - Hamiltonian to do
-  - shared memory
-  - atomic functions
-  - registers number
-  - Numba CUDA read > 3.2 chapter 
-  - Streams?
-
 ## 1050 TI Specification
 `From: https://devtalk.nvidia.com/default/topic/1029700/cuda-for-geforce-gtx-1050-ti/`
 
