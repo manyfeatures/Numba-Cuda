@@ -3,6 +3,7 @@
 ### Useful Links
 
  - https://cuda-tutorial.readthedocs.io/en/latest/tutorials/tutorial01/
+ - https://developer.nvidia.com/blog/even-easier-introduction-cuda/ - inslude some c++
 
 
 ## Numba implementation
@@ -67,11 +68,22 @@ Result = PASS
 
 ```
 cudaMalloc(void **devPtr, size_t count);
+
 //cudaMalloc() allocates memory of size count in the device memory and updates the device pointer devPtr to the //allocated memory.
 ```
 
+```
+cudaFree(void *devPtr);
 
+//cudaFree() deallocates a region of the device memory where the device pointer devPtr points to. They are //comparable to malloc() and free() in C, respectively
+```
 
+```
+cudaMemcpy(void *dst, void *src, size_t count, cudaMemcpyKind kind)
+
+//Transfering date between host and device memory 
+//The function copy a memory of size count from src to dst. kind indicates the direction. For typical usage, the //value of kind is either cudaMemcpyHostToDevice or cudaMemcpyDeviceToHost. There are other possible values but we //will not touch them in this tutorial. 
+```
 
 ### Compile CUDA Program
 ```
@@ -92,6 +104,12 @@ Compile code above
 ```
 nvcc hello.cu -o hello
 ```
+
+time info
+```
+nvprof ./vector_add
+```
+
 
 ### Some code notes
 
