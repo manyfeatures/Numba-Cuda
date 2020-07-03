@@ -60,3 +60,8 @@ int main(){
         return 0;
 }
 ```
+
+Compile code above 
+```
+nvcc hello.cu -o hello
+```
