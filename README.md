@@ -51,6 +51,28 @@ deviceQuery, CUDA Driver = CUDART, CUDA Driver Version = 9.1, CUDA Runtime Versi
 Result = PASS 
 ```
 
+### CUDA code workflow
+```
+ Following is the common workflow of CUDA programs.
+
+    Allocate host memory and initialized host data
+    Allocate device memory
+    Transfer input data from host to device memory
+    Execute kernels
+    Transfer output from device memory to host
+
+```
+
+### CUDA functions
+
+```
+cudaMalloc(void **devPtr, size_t count);
+//cudaMalloc() allocates memory of size count in the device memory and updates the device pointer devPtr to the //allocated memory.
+```
+
+
+
+
 ### Compile CUDA Program
 ```
 #include <stdio.h>
@@ -76,7 +98,7 @@ nvcc hello.cu -o hello
 The `__global__` specifier indicates a function that runs on device (GPU). Such function can be called through host code, e.g. the `main()` function in the example, and is also known as "kernels".
 
 
-### C insertions
+# C insertions
 
 ###### Pointers as arguments
 
@@ -91,3 +113,32 @@ Passing by pointer gives you a copy of the pointer - it points to the same memor
 `Pass Pointer to Pointer to Value: void fcn(int** foo)`
 
 You get around the above by passing a pointer to a pointer to a value. As above, you can change the value so that the caller will see the change because it's the same memory location as the caller code is using. For the same reason, you can change the pointer to the value. This lets you do such things as allocate memory within the function and return it; `&arg2 = calloc(len);`. You still can't change the pointer to the pointer, since that's the thing you recieve a copy of.
+
+
+###### Vector addition in C (Compare with CUDA)
+```
+#define N 10000000
+
+void vector_add(float *out, float *a, float *b, int n) {
+    for(int i = 0; i < n; i++){
+        out[i] = a[i] + b[i];
+    }
+}
+
+int main(){
+    float *a, *b, *out; 
+
+    // Allocates memory and returns a pointer to it.
+    a   = (float*)malloc(sizeof(float) * N); // size in bytes
+    b   = (float*)malloc(sizeof(float) * N);
+    out = (float*)malloc(sizeof(float) * N);
+
+    // Initialize array
+    for(int i = 0; i < N; i++){
+        a[i] = 1.0f; b[i] = 2.0f;
+    }
+
+    // Main function
+    vector_add(out, a, b, N);
+}
+```
