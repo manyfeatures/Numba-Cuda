@@ -45,3 +45,18 @@
 deviceQuery, CUDA Driver = CUDART, CUDA Driver Version = 9.1, CUDA Runtime Version = 8.0, NumDevs = 1, Device0 = GeForce GTX 1050 Ti
 Result = PASS 
 ```
+
+### Compile CUDA Program
+```
+#include <stdio.h>
+
+
+__global__ void cuda_hello(){
+        printf("Hello World from GPU!\n");
+}
+
+int main(){
+        cuda_hello<<<1,1>>>();
+        return 0;
+}
+```
