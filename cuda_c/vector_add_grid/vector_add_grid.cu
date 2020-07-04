@@ -15,7 +15,10 @@ __global__ void vector_add(float *out, float *a, float *b, int n) {
     //No iteration bc we have many threads here!!!
     if (tid < n){
         out[tid] = a[tid] + b[tid];
+        printf("Thread number: %d: element: %f\n", tid, out[tid]);
+
     }
+
 }
 
 int main(){
@@ -57,6 +60,7 @@ int main(){
     }
 
     printf("PASSED\n");
+    printf("out[0]: %f\n", out[0]);
 
     // Deallocate device memory
     cudaFree(d_a);

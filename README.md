@@ -115,6 +115,23 @@ nvprof ./vector_add
 
 The `__global__` specifier indicates a function that runs on device (GPU). Such function can be called through host code, e.g. the `main()` function in the example, and is also known as "kernels".
 
+###### pragma
+`#pragma` unroll is a compiler optimization that can, for example, replace a piece of code like
+```
+for ( int i = 0; i < 5; i++ )
+    b[i] = i;
+```
+with
+```
+b[0] = 0;
+b[1] = 1;
+b[2] = 2;
+b[3] = 3;
+b[4] = 4;
+```
+
+The good thing about the unrolled version is that it involves less processing load for the processor. In case of for loop version, the processing, in addition to assigning each i to b[i], involves i initialization, evaluating i<5 for 6 times, and incrementing i for 5 times. While in the second case, it only involves filing up b array content (perhaps plus int i=5; if i is used later). Another benefit of loop unrolling is the enhancement of Instruction-Level Parallelism (ILP). In the unrolled version, there would possibly be more operations for the processor to push into processing pipeline without being worried about the for loop condition in every iteration.
+
 
 # C insertions
 
@@ -132,6 +149,8 @@ Passing by pointer gives you a copy of the pointer - it points to the same memor
 
 You get around the above by passing a pointer to a pointer to a value. As above, you can change the value so that the caller will see the change because it's the same memory location as the caller code is using. For the same reason, you can change the pointer to the value. This lets you do such things as allocate memory within the function and return it; `&arg2 = calloc(len);`. You still can't change the pointer to the pointer, since that's the thing you recieve a copy of.
 
+###### e extern "C"
+`extern "C"` tells the C++ compiler not to perform any name-mangling on the code within the braces. This allows you to call C functions from within C++.
 
 ###### Vector addition in C (Compare with CUDA)
 ```
