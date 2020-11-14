@@ -35,7 +35,7 @@ def main():
     y0_d = cuda.to_device(y0)
     sol_d = cuda.device_array(y0.shape, dtype="float64")
     dydt_d = cuda.device_array(y0.shape, dtype="float64")
-    print(sol_d.dtype)
+    #print(sol_d.dtype)
 
     # Run on GPU
     start = timer()
@@ -54,4 +54,4 @@ if __name__ == "__main__":
     #import cProfile as cprofile
     #cprofile.run("main()", sort="time")
     #with cuda.profiling():
-    main()
+    main() 
