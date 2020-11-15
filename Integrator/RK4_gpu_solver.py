@@ -2,7 +2,7 @@
 # export NUMBA_ENABLE_CUDASIM=1 in linux
 from numba import cuda
 from numba import *
-from GPU_functions import harm_osc_gpu as func
+from gpu_functions import harm_osc_gpu as func
 
 
 @cuda.jit(device=True) # ('void(float32[:], float32[:], float32, int16)')
