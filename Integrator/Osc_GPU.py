@@ -6,11 +6,10 @@ from numba import *
 from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-#from stuff import *
-from Euler_template import *
+from stuff import *
+import Integrators
 
-
-blocks_per_grid = 4
+blocks_per_grid = 128
 threads_per_block = 32
 
 # @cuda.jit(device=True)#('void(float32[:], float32)')
@@ -51,11 +50,19 @@ def main():
     y0_d = cuda.to_device(y0)
     sol_d = cuda.device_array(y0.shape, dtype="float64")
     dydt_d = cuda.device_array(y0.shape, dtype="float64")
+    ########### rk4 arrays ################
+    d_k1 = cuda.device_array_like(y0)
+    d_k2 = cuda.device_array_like(y0)
+    d_k3 = cuda.device_array_like(y0)
+    d_k4 = cuda.device_array_like(y0)
+
+    d_buffer = cuda.device_array_like(y0)
+    ########### rk4 arrays ################
     print(sol_d.dtype)
 
     # Run on GPU
     start = timer()
-    euler_sol_cuda[blocks_per_grid, threads_per_block](y0_d, dydt_d, sol_d, dt, STEPS)
+    Integrators.rk4_sol_cuda[blocks_per_grid, threads_per_block](y0_d, dydt_d, sol_d, dt, STEPS, d_k1, d_k2, d_k3, d_k4, d_buffer)
     sol_h = sol_d.copy_to_host()
     t_ = timer() - start
     print ("Time consumed %f s" % t_)
